@@ -1,6 +1,3 @@
-<script setup>
-import {RouterView,RouterLink} from "vue-router";
-</script>
 <template>
   <main>
     <div class="links">
@@ -11,6 +8,10 @@ import {RouterView,RouterLink} from "vue-router";
   </main>
 </template>
 
+<script setup>
+import {RouterView,RouterLink} from "vue-router";
+</script>
+
 <style scoped>
 .links {
   padding: 20px
@@ -18,7 +19,6 @@ import {RouterView,RouterLink} from "vue-router";
 .links a {
   margin: 0 5px
 }
-
 .active {
   font-weight: bold;
 }
