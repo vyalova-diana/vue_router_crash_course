@@ -1,27 +1,34 @@
 <script setup>
 import carsData from "../data.json"
-import {onMounted, ref, watch} from "vue";
+import {onMounted, onUpdated, ref, watch} from "vue";
 import {useRoute, useRouter} from "vue-router";
-const router = useRouter()
-const route = useRoute()
-const cars = ref(carsData)
-const make = ref("All")
-onMounted(() => {
-  make.value = route.query.make
+const router = useRouter();
+const route = useRoute();
+const cars = ref(carsData);
+const make = ref("All");
+
+onMounted(() => {   //to share links with saved state
+  if (route.query.make) {
+    make.value = route.query.make;
+  }
+})
+
+onUpdated(() => {
+  route.query.make ? make.value = route.query.make : make.value = "All";
 })
 
 watch(make, () => {
-    make.value === "All" ? cars.value = carsData : cars.value = carsData.filter(c => c.make === make.value)
+   make.value === "All"  ? cars.value = carsData : cars.value = carsData.filter(c => c.make === make.value);
 })
 
+
 const handleChange = () => {
-    router.push({query: {make: make.value}})
+    router.push({query: {make: make.value}});
 }
 </script>
 
 <template>
   <main class="container">
-
     <h1>Our Cars</h1>
     <select v-model="make" @change="handleChange">
       <option value="All">All</option>
