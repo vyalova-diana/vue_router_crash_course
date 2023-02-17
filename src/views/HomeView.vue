@@ -1,15 +1,35 @@
 <script setup>
 import carsData from "../data.json"
-import {ref} from "vue";
-import {useRouter} from "vue-router";
+import {onMounted, ref, watch} from "vue";
+import {useRoute, useRouter} from "vue-router";
 const router = useRouter()
-const cars = ref(carsData);
+const route = useRoute()
+const cars = ref(carsData)
+const make = ref("All")
+onMounted(() => {
+  make.value = route.query.make
+})
+
+watch(make, () => {
+    make.value === "All" ? cars.value = carsData : cars.value = carsData.filter(c => c.make === make.value)
+})
+
+const handleChange = () => {
+    router.push({query: {make: make.value}})
+}
 </script>
 
 <template>
   <main class="container">
 
     <h1>Our Cars</h1>
+    <select v-model="make" @change="handleChange">
+      <option value="All">All</option>
+      <option value="Chevrolet">Chevrolet</option>
+      <option value="Buick">Buick</option>
+      <option value="Porsche">Porsche</option>
+      <option value="Audi">Audi</option>
+    </select>
     <div class="cards">
       <div @click="router.push(`/car/${car.id}`)" v-for="car in cars" :key="car.id" class="card">
         <h1>{{car.make}}</h1>
