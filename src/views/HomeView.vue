@@ -1,6 +1,6 @@
 <script setup>
 import carsData from "../data.json"
-import {onMounted, onUpdated, ref, watch} from "vue";
+import {onMounted, ref, watch} from "vue";
 import {useRoute, useRouter} from "vue-router";
 const router = useRouter();
 const route = useRoute();
@@ -8,22 +8,22 @@ const cars = ref(carsData);
 const make = ref("All");
 
 onMounted(() => {   //to share links with saved state
-  if (route.query.make) {
+  if (route.query.make)
     make.value = route.query.make;
-  }
+
 })
 
-onUpdated(() => {
-  route.query.make ? make.value = route.query.make : make.value = "All";
+watch(route,() => {
+  if (!route.query.make && make.value !==  "All")
+    make.value = "All";
 })
+
 
 watch(make, () => {
-   make.value === "All"  ? cars.value = carsData : cars.value = carsData.filter(c => c.make === make.value);
+    make.value === "All"  ? cars.value = carsData : cars.value = carsData.filter(c => c.make === make.value);
 })
-
-
 const handleChange = () => {
-    router.push({query: {make: make.value}});
+   router.push({query: {make: make.value}})
 }
 </script>
 
