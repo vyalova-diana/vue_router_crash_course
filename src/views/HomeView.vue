@@ -18,7 +18,6 @@ watch(route,() => {
     make.value = "All";
 })
 
-
 watch(make, () => {
     make.value === "All"  ? cars.value = carsData : cars.value = carsData.filter(c => c.make === make.value);
 })
